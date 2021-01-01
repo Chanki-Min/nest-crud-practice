@@ -3,11 +3,21 @@ import { LoggerMiddleware } from '../middleware/logger.middleware'
 import { BoardModule } from '../board/board.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { type } from 'os';
+import { Board } from '../board/entities/board.entity';
 
 @Module({
   imports: [
     BoardModule,
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'test',
+      password: 'test',
+      database: 'test',
+      entities: [Board],
+      synchronize: true,
+    }),
   ],
   controllers: [],
   providers: [],
