@@ -1,9 +1,14 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { LoggerMiddleware } from '../middleware/logger.middleware'
 import { BoardModule } from '../board/board.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { type } from 'os';
 
 @Module({
-  imports: [BoardModule],
+  imports: [
+    BoardModule,
+    TypeOrmModule.forRoot(),
+  ],
   controllers: [],
   providers: [],
 })
