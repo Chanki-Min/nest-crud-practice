@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { BoardModule } from './board/board.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +12,9 @@ async function bootstrap() {
       transform: true,  //request의 parameter type을 typescript에 명시한 자료형으로 변환한다.
     })
   )
-  await app.listen(3000);
+  const appConfigService = app.get(ConfigService);  //main.ts 에서 설정 파일을 사용하기 위해 서비스 로드
+  const port: number = appConfigService.get<number>('http.port');
+  const host: string = appConfigService.get<string>('http.host');
+  await app.listen(port, host);
 }
 bootstrap();
