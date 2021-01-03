@@ -5,9 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Board } from '../board/entities/board.entity';
 import configuration from '../configuration/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from 'src/auth/auth.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
+    AuthModule,
+    UserModule,
     BoardModule,
     ConfigModule.forRoot({
       load: [configuration],    //configuration 디렉토리의 설정 파일을 로드한다
