@@ -12,23 +12,30 @@ export class BoardService {
         private readonly boardRepository: Repository<Board>,
     ) {};
 
-    findAll(): Promise<Board[]> {
+    async getAll(): Promise<Board[]> {
         return this.boardRepository.find();
     }
 
-    findOne(id: number): Promise<Board> {
+    async getOne(id: number): Promise<Board> {
         return this.boardRepository.findOne(id);
     }
 
-    createOne(createBoardDto: CreateBoardDto): Promise<Board> {
-        return this.boardRepository.save(createBoardDto);
+    async insertOne(createBoardDto: CreateBoardDto): Promise<Board> {
+        const newBoard = this.boardRepository.create(createBoardDto);
+        return this.boardRepository.save(newBoard);
     }
 
-    updateOne(id: number, updateBoardDto: UpdateBoardDto): Promise<UpdateResult> {
-        return this.boardRepository.update(id, updateBoardDto);
+    async updateOne(id: number, updateBoardDto: UpdateBoardDto): Promise<Board> {
+        await this.boardRepository.update(id, updateBoardDto);
+        return this.boardRepository.findOne(id);
     }
 
-    remove(id: number): Promise<DeleteResult> {
-        return this.boardRepository.delete(id);
+    async deleteOne(id: number): Promise<{ deleted: boolean, message?: string }> {
+        try {
+            await this.boardRepository.delete(id);
+            return {deleted: true};
+        } catch(e) {
+            return {deleted: false, message: e.message}
+        }
     }
 }

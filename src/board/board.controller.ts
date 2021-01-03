@@ -9,17 +9,17 @@ export class BoardController {
 
     @Get()
     async getAllBoards() {
-        return await this.boardService.findAll();
+        return await this.boardService.getAll();
     }
 
     @Get(':id')
     async getBoard(@Param('id') id: number) {
-        return await this.boardService.findOne(id);
+        return await this.boardService.getOne(id);
     }
 
     @Post()
     async postBoard(@Body() boardDto: CreateBoardDto) {
-        return await this.boardService.createOne(boardDto);
+        return await this.boardService.insertOne(boardDto);
     }
 
     @Patch(':id')
