@@ -19,4 +19,13 @@ export class Board {
 
     @UpdateDateColumn()
     updateAt: Date;
+
+    constructor(author?: string, title?: string, content?: string, createAt?: Date, updateAt?: Date) {
+        this.author = author || '';
+        this.title = title || '';
+        this.content = content || '';
+        this.createAt = createAt || new Date();
+        this.updateAt = updateAt || new Date();
+
+    }
 }
