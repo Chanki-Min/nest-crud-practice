@@ -8,12 +8,12 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(private readonly authService: AuthService) {
         super({
             usernameField: 'username',      //http post body에 있을 username 필드의 이름을 지정
-            passwordField: 'passwordHash',      //http post body에 있을 password 필드의 이름을 지정
+            passwordField: 'password',      //http post body에 있을 password 필드의 이름을 지정
         });
     }
 
-    async validate(username: string, passwordHash: string): Promise<any> {
-        const user = this.authService.validateUser(username, passwordHash);
+    async validate(username: string, password: string): Promise<any> {
+        const user = this.authService.validateUser(username, password);
         if(!user) {
             throw new UnauthorizedException();
         } else {
