@@ -1,11 +1,8 @@
-import { IsString } from "class-validator";
+import { IsString, MaxLength } from "class-validator";
 
 export class CreateBoardDto {
 
-    @IsString()
-    readonly author: string;
-
-    @IsString()
+    @MaxLength(50)
     readonly title: string;
 
     @IsString()

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -32,6 +32,9 @@ export class UserService {
 
     const newUser: User = this.userRepository.create(dto);
     try {
+      if((await this.userRepository.findOne(newUser.username))) {
+        throw new BadRequestException(`duplicated user`);
+      }
       await this.userRepository.save(newUser);
     } catch(e) {
       return {created: false, message: e.message};

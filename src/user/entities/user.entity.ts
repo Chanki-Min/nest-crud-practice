@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, Unique } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn, Unique } from "typeorm";
+import { Board } from '../../board/entities/board.entity';
 
 @Entity()
 export class User {
@@ -13,4 +14,9 @@ export class User {
 
     @Column()
     password: string;
+
+    @OneToMany((type: any) => Board, board => board.id, {
+        cascade: false,
+    })
+    boards: Board[];
 }
