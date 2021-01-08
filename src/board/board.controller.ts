@@ -33,8 +33,23 @@ export class BoardController {
         return await this.boardService.insertOne(username, boardDto);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Patch(':id')
-    async updateBoard(@Param('id') id: number, @Body() updateBoardDto: UpdateBoardDto) {
-        return await this.boardService.updateOne(id, updateBoardDto);
+    async updateBoard(@Param('id') id: number, @Body() updateBoardDto: UpdateBoardDto, @Request() req) {
+        const username: string = req?.user?.username;
+        if(!username) {
+            throw new UnauthorizedException('Failed to get username');
+        }
+        return await this.boardService.updateOne(username, id, updateBoardDto);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id')
+    async deleteBoard(@Param('id') id: number, @Request() req) {
+        const username: string = req?.user?.username;
+        if(!username) {
+            throw new UnauthorizedException('Failed to get username');
+        }
+        return await this.boardService.deleteOne(username, id);
     }
 }

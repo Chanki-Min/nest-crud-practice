@@ -15,6 +15,10 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
+  async getAllUser(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
   async getOneByUsername(username: string): Promise<User | undefined> {
     return this.userRepository.findOne(username);
   }
@@ -42,30 +46,31 @@ export class UserService {
     return {created: true};
   }
 
-  async updateUser(dto: UpdateUserDto): Promise<{updated: boolean, message?: string}> {
+  async updateUser(username: string, dto: UpdateUserDto): Promise<{updated: boolean, message?: string}> {
     if(dto.password) {
       try {
         dto.password = await bcrypt.hash(dto.password, saltOrRounds);
       } catch (e) {
-        return {updated: true, message: e.message};
+        return {updated: false, message: e.message};
       }
     }
 
-    const currentUser: User = await this.userRepository.findOne(dto.username);
+    const currentUser: User = await this.userRepository.findOne(username);
     if(!currentUser) {
       return {updated: false, message: 'cannot find user to update'};
     }
 
     try {
-    await this.userRepository.update(dto.username, dto);
+    await this.userRepository.update(username, dto);
     } catch(e) {
-      return {updated: true, message: e.message};
+      return {updated: false, message: e.message};
     }
     return {updated: true}
   }
 
   async deleteOne(username: string): Promise<{ deleted: boolean; message?: string }> {
     try {
+      await this.userRepository.findOneOrFail(username);
       await this.userRepository.delete(username);
       return { deleted: true };
     } catch (e) {

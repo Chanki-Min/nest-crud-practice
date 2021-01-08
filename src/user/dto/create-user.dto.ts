@@ -5,7 +5,7 @@ export class CreateUserDto {
     @Length(1, 20)
     name: string;
 
-    @Length(10, 20)     //lenth 데코레이터는 기본적으로 해당 필드가 string인지도 검사해준다
+    @Length(5, 20)     //lenth 데코레이터는 기본적으로 해당 필드가 string인지도 검사해준다
     username: string;
 
     @Length(8, 20)      //비밀번호의 길이가 8~20자 이내이며
